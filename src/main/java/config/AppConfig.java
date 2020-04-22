@@ -103,6 +103,7 @@ public class AppConfig {
 
         props.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
         props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        props.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 
         return props;
     }
