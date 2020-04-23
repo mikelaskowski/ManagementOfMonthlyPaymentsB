@@ -23,9 +23,18 @@ public class UserDaoImpl implements UserDao {
         Query<User> query = session
                 .createQuery("select u from User as u", User.class);
 
-       Optional<List<User>> users = Optional.ofNullable(query.getResultList());
+        Optional<List<User>> users = Optional.ofNullable(query.getResultList());
 
         return users.get();
+    }
+
+    @Override
+    public User getUserById(int userId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Optional<User> user = Optional.ofNullable(session.get(User.class, userId));
+
+        return user.get();
     }
 
     @Override
@@ -35,5 +44,17 @@ public class UserDaoImpl implements UserDao {
         session.saveOrUpdate(user);
 
         return user;
+    }
+
+    @Override
+    public void deleteUser(int userId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        // Query<User> query = session.createQuery("delete from User as u where u.id=:theId", User.class);
+        Query query = session.createQuery("delete from User as u where u.id=:theId");
+        query.setParameter("theId", userId);
+
+        query.executeUpdate();
+
     }
 }

@@ -21,6 +21,13 @@ public class UserController {
         return users;
     }
 
+    @GetMapping(value = "/users/{userId}")
+    public User getUser(@PathVariable int userId){
+        User user = userService.getUserById(userId);
+
+        return user;
+    }
+
     @PostMapping(value = "/users")
     public User saveUser(@RequestBody User user) {
 
@@ -29,6 +36,19 @@ public class UserController {
         user.setId(0);
 
         userService.save(user);
+
         return user;
+    }
+
+    @PutMapping(value = "/users")
+    public User updateUser(@RequestBody User user){
+        userService.updateUser(user);
+
+        return user;
+    }
+
+    @DeleteMapping(value = "/users/{userId}")
+    public void deleteUser(@PathVariable int userId){
+        userService.deleteUser(userId);
     }
 }

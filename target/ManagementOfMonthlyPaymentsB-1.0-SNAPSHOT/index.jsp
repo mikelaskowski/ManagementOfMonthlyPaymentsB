@@ -3,10 +3,11 @@
     <title>Hello</title>
 </head>
 <body>
-
-<h1 style="align-content: center">
+<div style="align-content: center">
+<h1>
     Spring REST CRUD Management of Monthly Payments
 </h1>
+</div>
 
 <hr>
 
