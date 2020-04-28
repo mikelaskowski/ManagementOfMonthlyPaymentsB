@@ -52,4 +52,18 @@ public class UserController {
     public void deleteUser(@PathVariable int userId){
         userService.deleteUser(userId);
     }
+
+    @GetMapping(value ="/login/{email:.+}")
+    public User loginUser(@PathVariable String email, @RequestParam ("password") String password){
+      User user = userService.getUserByEmailAndPassword(email, password);
+
+        return user;
+    }
+
+    /*@GetMapping(value ="/login/{email:.+}")
+    public User loginUser(@PathVariable String email){
+        User user = userService.getUserByEmail(email);
+
+        return user;
+    }*/
 }

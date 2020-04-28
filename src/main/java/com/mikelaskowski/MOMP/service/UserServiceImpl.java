@@ -43,4 +43,16 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(int userId) {
         userDao.deleteUser(userId);
     }
+
+    @Transactional
+    @Override
+    public User getUserByEmailAndPassword(String email, String password) {
+        return userDao.getUserByEmailAndPassword(email, password);
+    }
+
+    @Transactional
+    @Override
+    public User getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
+    }
 }
