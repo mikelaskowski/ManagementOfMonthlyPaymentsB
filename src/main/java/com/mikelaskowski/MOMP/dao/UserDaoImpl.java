@@ -1,6 +1,7 @@
 package com.mikelaskowski.MOMP.dao;
 
 import com.mikelaskowski.MOMP.entity.User;
+import com.mikelaskowski.MOMP.tools.PasswordService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -15,6 +16,9 @@ public class UserDaoImpl implements UserDao {
 
     @Autowired
     SessionFactory sessionFactory;
+
+    @Autowired
+    PasswordService passwordService;
 
     @Override
     public List<User> findUsers() {
@@ -63,7 +67,7 @@ public class UserDaoImpl implements UserDao {
 
         Session session = sessionFactory.getCurrentSession();
 
-        Query<User> query = session.createQuery("select u from User as u where u.email=:loginEmail " +
+        /*Query<User> query = session.createQuery("select u from User as u where u.email=:loginEmail " +
                 "AND u.password=:loginPassword",User.class);
         System.out.println(email);
         System.out.println(password);
@@ -71,7 +75,19 @@ public class UserDaoImpl implements UserDao {
         query.setParameter("loginEmail", email);
         query.setParameter("loginPassword", password);
 
-        Optional<User> user = Optional.ofNullable(query.getSingleResult());
+        Optional<User> user = Optional.ofNullable(query.getSingleResult());*/
+
+        Query<User> query = session.createQuery("select u from User as u where u.email=:loginEmail ",User.class);
+        System.out.println(email);
+        System.out.println(password);
+
+        query.setParameter("loginEmail", email);
+
+        Optional<User> user = query.getResultList().stream()
+                // check if password given by login input is correct. DB stores hashed password, it's necessary to use
+               // BCryp in passwordService to check password
+                .filter(currentUser -> passwordService.decode(password, currentUser.getPassword()))
+                .findFirst();
 
         return user.get();
     }

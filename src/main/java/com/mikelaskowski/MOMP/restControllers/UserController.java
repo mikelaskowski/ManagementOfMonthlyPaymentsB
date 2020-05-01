@@ -66,7 +66,6 @@ public class UserController {
     @GetMapping(value ="/login/{email:.+}")
     public User loginUser(@PathVariable String email, @RequestParam ("password") String password){
 
-
       User user = userService.getUserByEmailAndPassword(email, password);
 
         return user;
