@@ -2,6 +2,7 @@ package com.mikelaskowski.MOMP.restControllers;
 
 import com.mikelaskowski.MOMP.entity.User;
 import com.mikelaskowski.MOMP.service.UserService;
+import com.mikelaskowski.MOMP.tools.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordService passwordService;
 
     @GetMapping(value = "/users")
     public List<User> findUsers() {
@@ -36,6 +40,12 @@ public class UserController {
         // when we assing 0, we inform Hibernate that we create new object
         user.setId(0);
 
+        String password = user.getPassword();
+
+        String encodedPassword = passwordService.encodePassword(password);
+
+        user.setPassword(encodedPassword);
+
         userService.save(user);
 
         return user;
@@ -55,6 +65,8 @@ public class UserController {
 
     @GetMapping(value ="/login/{email:.+}")
     public User loginUser(@PathVariable String email, @RequestParam ("password") String password){
+
+
       User user = userService.getUserByEmailAndPassword(email, password);
 
         return user;
