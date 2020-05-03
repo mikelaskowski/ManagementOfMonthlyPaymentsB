@@ -1,8 +1,9 @@
 package com.mikelaskowski.MOMP.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Table(name = "payment")
@@ -45,6 +46,10 @@ public class Payment {
 
     @Column(name = "img_path")
     private String imgPath;
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Payment() {}
 
@@ -134,5 +139,21 @@ public class Payment {
 
     public void setPaid(boolean paid) {
         isPaid = paid;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
