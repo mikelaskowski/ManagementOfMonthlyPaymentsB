@@ -53,6 +53,13 @@ public class UserController {
 
     @PutMapping(value = "/users")
     public User updateUser(@RequestBody User user){
+        String password = user.getPassword();
+
+        String encodedPassword = passwordService.encodePassword(password);
+
+        user.setPassword(encodedPassword);
+
+
         userService.updateUser(user);
 
         return user;
